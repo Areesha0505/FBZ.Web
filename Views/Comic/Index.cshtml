@@ -41,6 +41,21 @@
         }
 
     </table>
+    <div style="margin-top:20px">
+
+        @if (ViewBag.CurrentPage > 1)
+        {
+            <a href="/Comic?search=@Context.Request.Query["search"]&genre=@Context.Request.Query["genre"]&sort=@Context.Request.Query["sort"]&page=@(ViewBag.CurrentPage-1)">Previous</a>
+        }
+
+        <span> Page @ViewBag.CurrentPage of @ViewBag.TotalPages </span>
+
+        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+        {
+            <a href="/Comic?search=@Context.Request.Query["search"]&genre=@Context.Request.Query["genre"]&sort=@Context.Request.Query["sort"]&page=@(ViewBag.CurrentPage+1)">Next</a>
+        }
+
+    </div>
 }
 else
 {
