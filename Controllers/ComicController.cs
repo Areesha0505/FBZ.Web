@@ -120,7 +120,11 @@ namespace FBZ.Web.Controllers
         [HttpPost]
         public IActionResult Save(string id)
         {
-            Console.WriteLine("Saved comic: " + id);
+            if (HttpContext.Session.GetString("User") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            
             var saved = HttpContext.Session.GetString("SavedComics");
 
             if (saved == null)
@@ -129,6 +133,24 @@ namespace FBZ.Web.Controllers
                 saved += "," + id;
 
             HttpContext.Session.SetString("SavedComics", saved);
+
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult Flag(string id)
+        {
+            if (HttpContext.Session.GetString("Role") != "Staff")
+            {
+                return RedirectToAction("Index");
+            }
+            var flagged = HttpContext.Session.GetString("FlaggedComics");
+
+            if (flagged == null)
+                flagged = id;
+            else
+                flagged += "," + id;
+
+            HttpContext.Session.SetString("FlaggedComics", flagged);
 
             return RedirectToAction("Index");
         }

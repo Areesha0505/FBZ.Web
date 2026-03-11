@@ -92,6 +92,7 @@
         <th>Material Type</th>
         <th>Year</th>
         <th>Save</th>
+        <th>Flag</th>
     </tr>
 
     @foreach (var comic in Model)
@@ -109,6 +110,16 @@
                     <button type="submit">Save</button>
                 </form>
             </td>
+   
+            @if (Context.Session.GetString("Role") == "Staff")
+            {
+                <td>
+                    <form method="post" action="/Comic/Flag">
+                        <input type="hidden" name="id" value="@comic.BL_Record_ID" />
+                        <button type="submit">Flag</button>
+                    </form>
+                </td>
+            }
         </tr>
     }
 

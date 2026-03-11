@@ -24,23 +24,22 @@ namespace FBZ.Web.Controllers
             return View();
         }
 
+       
         [HttpPost]
-        public IActionResult Login(User loginUser)
+        public IActionResult Login(string username, string password)
         {
-            var user = users.FirstOrDefault(u =>
-                u.Username == loginUser.Username &&
-                u.Password == loginUser.Password);
+            HttpContext.Session.SetString("User", username);
 
-            if (user != null)
+            if (username == "staff")
             {
-                HttpContext.Session.SetString("username", user.Username);
-                HttpContext.Session.SetString("role", user.Role);
-
-                return RedirectToAction("Index", "Comic");
+                HttpContext.Session.SetString("Role", "Staff");
+            }
+            else
+            {
+                HttpContext.Session.SetString("Role", "User");
             }
 
-            ViewBag.Error = "Invalid login";
-            return View();
+            return RedirectToAction("Index", "Comic");
         }
 
         public IActionResult Logout()
