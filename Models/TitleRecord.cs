@@ -9,5 +9,8 @@ namespace FBZ.Web.Models
 
         [Name("Title")]
         public string Title { get; set; }
+
+        [Name("Dates associated with name")]
+        public string Date_of_publication { get; set; }
     }
 }

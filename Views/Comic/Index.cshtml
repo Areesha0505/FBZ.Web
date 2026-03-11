@@ -22,8 +22,16 @@
     <input type="text" name="searchTitle" placeholder="Enter title..." />
 
     <button type="submit">Search</button>
+
     <button type="submit" name="sortOrder" value="az">Sort A-Z</button>
+
     <button type="submit" name="sortOrder" value="za">Sort Z-A</button>
+    
+    <label><b>Group By:</b></label>
+
+    <input type="radio" name="groupBy" value="author"> Author
+
+    <input type="radio" name="groupBy" value="year"> Year
 
     <a href="/">Clear</a>
 
@@ -65,6 +73,7 @@
         <th>Author</th>
         <th>ISBN</th>
         <th>Material Type</th>
+        <th>Year</th>
     </tr>
 
     @foreach (var comic in Model)
@@ -75,6 +84,7 @@
             <td>@comic.Author</td>
             <td>@comic.ISBN</td>
             <td>@comic.Material_type</td>
+            <td>@comic.Year</td>
         </tr>
     }
 
