@@ -7,7 +7,7 @@ namespace FBZ.Web.Controllers
 {
     public class ComicController : Controller
     {
-        public IActionResult Index(string searchTitle)
+        public IActionResult Index(string searchTitle, string genre)
         {
             var recordsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "records.csv");
             var namesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "names.csv");
@@ -34,6 +34,14 @@ namespace FBZ.Web.Controllers
             {
                 titles = csv.GetRecords<TitleRecord>().ToList();
             }
+            var genres = records
+    .Where(x => !string.IsNullOrEmpty(x.Content_type))
+    .Select(x => x.Content_type)
+    .Distinct()
+    .OrderBy(x => x)
+    .ToList();
+
+            ViewBag.Genres = genres;
 
             var merged =
                 from r in records
@@ -48,12 +56,18 @@ namespace FBZ.Web.Controllers
                     r.BL_Record_ID,
                     Title = t?.Title,
                     Author = n?.Name,
+                    Genre = r.Content_type,
                     r.ISBN
+
                 };
 
             if (!string.IsNullOrEmpty(searchTitle))
             {
                 merged = merged.Where(x => x.Title != null && x.Title.Contains(searchTitle));
+            }
+            if (!string.IsNullOrEmpty(genre))
+            {
+                merged = merged.Where(x => x.Genre != null && x.Genre == genre);
             }
 
             var totalRecords = merged.Count();

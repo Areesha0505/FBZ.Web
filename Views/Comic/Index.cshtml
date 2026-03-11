@@ -3,6 +3,20 @@
 
 <h2>FBZ Comic Encyclopedia</h2>
 <form method="get">
+    <label><b>Select Genre:</b></label>
+
+    <select name="genre">
+
+        <option value="">All</option>
+
+        @foreach (var g in ViewBag.Genres)
+        {
+            <option value="@g">@g</option>
+        }
+
+    </select>
+
+    <br /><br />
 
     <label><b>Search Title:</b></label>
     <input type="text" name="searchTitle" placeholder="Enter title..." />
