@@ -61,7 +61,20 @@ namespace FBZ.Web.Controllers
                     Year = t.Date_of_publication,
                     ISBN = string.IsNullOrEmpty(r.ISBN) ? "missing" : r.ISBN,
 
+
                 };
+            merged = merged
+.GroupBy(x => x.BL_Record_ID)
+.Select(g => new
+{
+    BL_Record_ID = g.Key,
+    Title = g.First().Title,
+    Author = string.Join(", ", g.Select(x => x.Author).Where(a => !string.IsNullOrEmpty(a)).Distinct()),
+    Genre = g.First().Genre,
+    Material_type = g.First().Material_type,
+    Year = string.Join(", ", g.Select(x => x.Year).Where(y => !string.IsNullOrEmpty(y)).Distinct()),
+    ISBN = string.Join(", ", g.Select(x => string.IsNullOrEmpty(x.ISBN) ? "missing" : x.ISBN).Distinct())
+});
 
             if (!string.IsNullOrEmpty(searchTitle))
             {
