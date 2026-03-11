@@ -7,7 +7,7 @@ namespace FBZ.Web.Controllers
 {
     public class ComicController : Controller
     {
-        public IActionResult Index(string searchTitle, string genre, string sortOrder, string groupBy)
+        public IActionResult Index(string searchTitle, string genre, string sortOrder, string groupBy, int page = 1)
         {
             var recordsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "records.csv");
             var namesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "names.csv");
@@ -87,7 +87,14 @@ namespace FBZ.Web.Controllers
             {
                 merged = merged.OrderBy(x => x.Year);
             }
+            ViewBag.TotalRecords = merged.Count();
+            int pageSize = 100;
 
+            var pagedData = merged
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+           
 
             var totalRecords = merged.Count();
 
@@ -95,7 +102,7 @@ namespace FBZ.Web.Controllers
 
             var displayRecords = merged.Take(100).ToList();
 
-            return View(displayRecords);
+            return View(pagedData);
         }
     }
 }

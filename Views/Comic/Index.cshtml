@@ -26,12 +26,29 @@
     <button type="submit" name="sortOrder" value="az">Sort A-Z</button>
 
     <button type="submit" name="sortOrder" value="za">Sort Z-A</button>
+
     
     <label><b>Group By:</b></label>
 
     <input type="radio" name="groupBy" value="author"> Author
 
     <input type="radio" name="groupBy" value="year"> Year
+
+    <a href="/?page=@(Context.Request.Query["page"].Count == 0 ? 1 : int.Parse(Context.Request.Query["page"]) - 1)">
+        <button>Previous 100</button>
+    </a>
+
+    <a href="/?page=@(Context.Request.Query["page"].Count == 0 ? 2 : int.Parse(Context.Request.Query["page"]) + 1)">
+        <button>Next 100</button>
+    </a>
+    <br />
+
+ 
+    @{
+        var currentPage = Context.Request.Query["page"].Count == 0 ? 1 : int.Parse(Context.Request.Query["page"]);
+    }
+
+    <br /><br />
 
     <a href="/">Clear</a>
 
