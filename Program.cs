@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using System.Text;
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -13,8 +14,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.MapControllerRoute(
+   app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Comic}/{action=Index}/{id?}");
 
 app.Run();

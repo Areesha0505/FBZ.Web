@@ -1,63 +1,48 @@
-﻿<h2>FBZ Comic Search</h2>
+﻿@using System.Linq
+@model IEnumerable<dynamic>
 
-<form method="get">
+<h2>FBZ Comic Encyclopedia</h2>
 
-    <input type="text" name="search" placeholder="Search title..." />
+<p><b>Total Records Loaded:</b> @Model.Count()</p>
 
-    <select name="genre">
-        <option value="">All Genres</option>
-        <option value="Fantasy">Fantasy</option>
-        <option value="Horror">Horror</option>
-        <option value="Science fiction">Science Fiction</option>
-    </select>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-    <button type="submit">Search</button>
-    <button type="submit" formaction="/Comic/Export">Export CSV</button>
+    th, td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+    }
 
-</form>
+    th {
+        background-color: #f2f2f2;
+    }
 
-<p><b>Showing first 100 records</b></p>
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
 
+<table>
 
-@if (Model != null && Model.Count > 0)
-{
-    <table border="1">
+    <tr>
+        <th>BL Record ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>ISBN</th>
+    </tr>
 
+    @foreach (var comic in Model)
+    {
         <tr>
-            <th>Title</th>
-            <th>Name</th>
-            <th>Genre</th>
-            <th>Year</th>
+            <td>@comic.BL_Record_ID</td>
+            <td>@comic.Title</td>
+            <td>@comic.Author</td>
+            <td>@comic.ISBN</td>
         </tr>
+    }
 
-        @foreach (var comic in Model)
-        {
-            <tr>
-                <td>@comic.Title</td>
-                <td>@comic.Name</td>
-                <td>@comic.Genre</td>
-                <td>@comic.DateOfPublication</td>
-            </tr>
-        }
-
-    </table>
-    <div style="margin-top:20px">
-
-        @if (ViewBag.CurrentPage > 1)
-        {
-            <a href="/Comic?search=@Context.Request.Query["search"]&genre=@Context.Request.Query["genre"]&sort=@Context.Request.Query["sort"]&page=@(ViewBag.CurrentPage-1)">Previous</a>
-        }
-
-        <span> Page @ViewBag.CurrentPage of @ViewBag.TotalPages </span>
-
-        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
-        {
-            <a href="/Comic?search=@Context.Request.Query["search"]&genre=@Context.Request.Query["genre"]&sort=@Context.Request.Query["sort"]&page=@(ViewBag.CurrentPage+1)">Next</a>
-        }
-
-    </div>
-}
-else
-{
-    <p>No results found.</p>
-}
+</table>

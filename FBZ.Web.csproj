@@ -7,25 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\names.csv" />
-    <None Remove="Data\records.csv" />
-    <None Remove="Data\titles.csv" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Data\names.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\records.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Data\titles.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Remove="wwwroot\Data\names.csv" />
+    <None Remove="wwwroot\Data\records.csv" />
+    <None Remove="wwwroot\Data\titles.csv" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Data\names.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Data\records.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Data\titles.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
