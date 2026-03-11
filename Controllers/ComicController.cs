@@ -12,6 +12,7 @@ namespace FBZ.Web.Controllers
         {
             var comics = LoadData();
 
+            // Title search
             if (!string.IsNullOrWhiteSpace(search))
             {
                 comics = comics
@@ -20,6 +21,7 @@ namespace FBZ.Web.Controllers
                     .ToList();
             }
 
+            // Genre filter ONLY if user selects a genre
             if (!string.IsNullOrWhiteSpace(genre))
             {
                 comics = comics
@@ -28,9 +30,12 @@ namespace FBZ.Web.Controllers
                     .ToList();
             }
 
-            return View(comics.Take(100).ToList());
+            // Show only first 100 rows by default
+            comics = comics.Take(100).ToList();
+
+            return View(comics);
         }
-        
+
 
         private List<ComicRecord> LoadData()
         {

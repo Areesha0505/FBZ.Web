@@ -1,4 +1,6 @@
-﻿<form method="get">
+﻿<h2>FBZ Comic Search</h2>
+
+<form method="get">
 
     <input type="text" name="search" placeholder="Search title..." />
 
@@ -6,9 +8,40 @@
         <option value="">All Genres</option>
         <option value="Fantasy">Fantasy</option>
         <option value="Horror">Horror</option>
-        <option value="Science Fiction">Science Fiction</option>
+        <option value="Science fiction">Science Fiction</option>
     </select>
 
     <button type="submit">Search</button>
 
 </form>
+
+<p><b>Showing first 100 records</b></p>
+
+
+@if (Model != null && Model.Count > 0)
+{
+    <table border="1">
+
+        <tr>
+            <th>Title</th>
+            <th>Name</th>
+            <th>Genre</th>
+            <th>Year</th>
+        </tr>
+
+        @foreach (var comic in Model)
+        {
+            <tr>
+                <td>@comic.Title</td>
+                <td>@comic.Name</td>
+                <td>@comic.Genre</td>
+                <td>@comic.DateOfPublication</td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <p>No results found.</p>
+}
