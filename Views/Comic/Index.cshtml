@@ -2,6 +2,18 @@
 @model IEnumerable<dynamic>
 
 <h2>FBZ Comic Encyclopedia</h2>
+<form method="get">
+
+    <label><b>Search Title:</b></label>
+    <input type="text" name="searchTitle" placeholder="Enter title..." />
+
+    <button type="submit">Search</button>
+
+    <a href="/">Clear</a>
+
+</form>
+
+<br />
 
 <p>
     <b>Showing:</b> @Model.Count() records<br />

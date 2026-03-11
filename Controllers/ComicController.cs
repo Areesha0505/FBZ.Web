@@ -7,7 +7,7 @@ namespace FBZ.Web.Controllers
 {
     public class ComicController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string searchTitle)
         {
             var recordsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "records.csv");
             var namesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "names.csv");
@@ -50,6 +50,11 @@ namespace FBZ.Web.Controllers
                     Author = n?.Name,
                     r.ISBN
                 };
+
+            if (!string.IsNullOrEmpty(searchTitle))
+            {
+                merged = merged.Where(x => x.Title != null && x.Title.Contains(searchTitle));
+            }
 
             var totalRecords = merged.Count();
 
