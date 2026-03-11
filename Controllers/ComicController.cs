@@ -44,6 +44,48 @@ namespace FBZ.Web.Controllers
 
             return View(comics);
         }
+        public IActionResult Export(string search, string genre, string sort)
+        {
+            var comics = LoadData();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                comics = comics
+                .Where(c => c.Title != null &&
+                c.Title.Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(genre))
+            {
+                comics = comics
+                .Where(c => c.Genre != null &&
+                c.Genre.Contains(genre, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            }
+
+            if (sort == "az")
+            {
+                comics = comics.OrderBy(c => c.Title).ToList();
+            }
+            else if (sort == "za")
+            {
+                comics = comics.OrderByDescending(c => c.Title).ToList();
+            }
+
+            var csv = new StringBuilder();
+            csv.AppendLine("Title,Name,Genre,Year");
+
+            foreach (var comic in comics)
+            {
+                csv.AppendLine($"{comic.Title},{comic.Name},{comic.Genre},{comic.DateOfPublication}");
+            }
+
+            return File(
+                Encoding.UTF8.GetBytes(csv.ToString()),
+                "text/csv",
+                "results.csv");
+        }
 
 
         private List<ComicRecord> LoadData()
