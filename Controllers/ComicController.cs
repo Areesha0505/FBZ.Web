@@ -57,6 +57,7 @@ namespace FBZ.Web.Controllers
                     Title = t?.Title,
                     Author = n?.Name,
                     Genre = r.Content_type,
+                    Material_type = r.Material_type,
                     r.ISBN
 
                 };

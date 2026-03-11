@@ -64,6 +64,7 @@
         <th>Title</th>
         <th>Author</th>
         <th>ISBN</th>
+        <th>Material Type</th>
     </tr>
 
     @foreach (var comic in Model)
@@ -73,6 +74,7 @@
             <td>@comic.Title</td>
             <td>@comic.Author</td>
             <td>@comic.ISBN</td>
+            <td>@comic.Material_type</td>
         </tr>
     }
 
