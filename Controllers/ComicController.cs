@@ -8,7 +8,7 @@ namespace FBZ.Web.Controllers
 {
     public class ComicController : Controller
     {
-        public IActionResult Index(string search)
+        public IActionResult Index(string search, string genre)
         {
             var comics = LoadData();
 
@@ -20,8 +20,17 @@ namespace FBZ.Web.Controllers
                     .ToList();
             }
 
-            return View(comics);
+            if (!string.IsNullOrWhiteSpace(genre))
+            {
+                comics = comics
+                    .Where(c => c.Genre != null &&
+                    c.Genre.Contains(genre, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            return View(comics.Take(100).ToList());
         }
+        
 
         private List<ComicRecord> LoadData()
         {
