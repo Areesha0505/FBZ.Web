@@ -59,7 +59,7 @@ namespace FBZ.Web.Controllers
                     Genre = r.Content_type,
                     Material_type = r.Material_type,
                     Year = t.Date_of_publication,
-                    r.ISBN
+                    ISBN = string.IsNullOrEmpty(r.ISBN) ? "missing" : r.ISBN,
 
                 };
 
