@@ -8,7 +8,7 @@ namespace FBZ.Web.Controllers
 {
     public class ComicController : Controller
     {
-        public IActionResult Index(string search, string genre, string sort)
+        public IActionResult Index(string search, string genre, string sort, int page = 1)
         {
             var comics = LoadData();
 
@@ -38,9 +38,17 @@ namespace FBZ.Web.Controllers
             {
                 comics = comics.OrderByDescending(c => c.Title).ToList();
             }
+            int pageSize = 100;
+            int totalRecords = comics.Count();
 
-            // Show only first 100 rows by default
-            comics = comics.Take(100).ToList();
+            comics = comics
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
+
 
             return View(comics);
         }
