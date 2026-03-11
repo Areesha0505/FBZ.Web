@@ -91,6 +91,7 @@
         <th>ISBN</th>
         <th>Material Type</th>
         <th>Year</th>
+        <th>Save</th>
     </tr>
 
     @foreach (var comic in Model)
@@ -102,6 +103,12 @@
             <td>@comic.ISBN</td>
             <td>@comic.Material_type</td>
             <td>@comic.Year</td>
+            <td>
+                <form method="post" action="/Comic/Save">
+                    <input type="hidden" name="id" value="@comic.BL_Record_ID" />
+                    <button type="submit">Save</button>
+                </form>
+            </td>
         </tr>
     }
 

@@ -117,5 +117,20 @@ namespace FBZ.Web.Controllers
 
             return View(pagedData);
         }
+        [HttpPost]
+        public IActionResult Save(string id)
+        {
+            Console.WriteLine("Saved comic: " + id);
+            var saved = HttpContext.Session.GetString("SavedComics");
+
+            if (saved == null)
+                saved = id;
+            else
+                saved += "," + id;
+
+            HttpContext.Session.SetString("SavedComics", saved);
+
+            return RedirectToAction("Index");
+        }
     }
 }
