@@ -1,0 +1,17 @@
+﻿@model List<string>
+
+<h2>Saved Comics</h2>
+
+@if (!Model.Any())
+{
+    <p>No comics saved yet.</p>
+}
+else
+{
+    <ul>
+        @foreach (var id in Model)
+        {
+            <li>Comic ID: @id</li>
+        }
+    </ul>
+}
