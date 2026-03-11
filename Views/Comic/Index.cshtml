@@ -1,0 +1,30 @@
+﻿@model List<FBZ.Web.Models.ComicRecord>
+
+<h2>FBZ Comic Search</h2>
+
+<form method="get">
+    <input type="text" name="search" placeholder="Search title..." />
+    <button type="submit">Search</button>
+</form>
+
+<br />
+
+<table border="1">
+    <tr>
+        <th>Title</th>
+        <th>Name</th>
+        <th>Genre</th>
+        <th>Year</th>
+    </tr>
+
+    @foreach (var comic in Model)
+    {
+        <tr>
+            <td>@comic.Title</td>
+            <td>@comic.Name</td>
+            <td>@comic.Genre</td>
+            <td>@comic.DateOfPublication</td>
+        </tr>
+    }
+
+</table>
