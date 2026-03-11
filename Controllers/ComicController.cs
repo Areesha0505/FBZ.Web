@@ -8,7 +8,7 @@ namespace FBZ.Web.Controllers
 {
     public class ComicController : Controller
     {
-        public IActionResult Index(string search, string genre)
+        public IActionResult Index(string search, string genre, string sort)
         {
             var comics = LoadData();
 
@@ -28,6 +28,15 @@ namespace FBZ.Web.Controllers
                     .Where(c => c.Genre != null &&
                     c.Genre.Contains(genre, StringComparison.OrdinalIgnoreCase))
                     .ToList();
+            }
+
+            if (sort == "az")
+            {
+                comics = comics.OrderBy(c => c.Title).ToList();
+            }
+            else if (sort == "za")
+            {
+                comics = comics.OrderByDescending(c => c.Title).ToList();
             }
 
             // Show only first 100 rows by default
