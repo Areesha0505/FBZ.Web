@@ -51,7 +51,13 @@ namespace FBZ.Web.Controllers
                     r.ISBN
                 };
 
-            return View(merged.Take(100).ToList());
+            var totalRecords = merged.Count();
+
+            ViewBag.TotalRecords = totalRecords;
+
+            var displayRecords = merged.Take(100).ToList();
+
+            return View(displayRecords);
         }
     }
 }

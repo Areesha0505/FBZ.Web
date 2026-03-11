@@ -3,7 +3,10 @@
 
 <h2>FBZ Comic Encyclopedia</h2>
 
-<p><b>Total Records Loaded:</b> @Model.Count()</p>
+<p>
+    <b>Showing:</b> @Model.Count() records<br />
+    <b>Total Records Loaded Successfully:</b> @ViewBag.TotalRecords
+</p>
 
 <style>
     table {
