@@ -7,6 +7,7 @@ namespace FBZ.Web.Controllers
 {
     public class ComicController : Controller
     {
+        static Dictionary<string, int> searchQueries = new Dictionary<string, int>();
         public IActionResult Index(string searchTitle, string genre, string sortOrder, string groupBy, int page = 1)
         {
             var recordsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "records.csv");
