@@ -124,6 +124,11 @@ namespace FBZ.Web.Controllers
 
             var displayRecords = merged.Take(100).ToList();
 
+            ViewBag.TopSearches = searchQueries
+    .OrderByDescending(x => x.Value)
+    .Take(10)
+    .ToList();
+
             return View(pagedData);
         }
         [HttpPost]

@@ -59,6 +59,17 @@
 <p>
     <b>Showing:</b> @Model.Count() records<br />
     <b>Total Records Loaded Successfully:</b> @ViewBag.TotalRecords
+    <h3>Top Search Queries</h3>
+
+    @if (ViewBag.TopSearches != null)
+    {
+        <ul>
+            @foreach (var item in ViewBag.TopSearches)
+            {
+                <li>@item.Key (@item.Value)</li>
+            }
+        </ul>
+    }
 </p>
 
 <style>
