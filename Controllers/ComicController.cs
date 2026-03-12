@@ -10,6 +10,7 @@ namespace FBZ.Web.Controllers
         static Dictionary<string, int> searchQueries = new Dictionary<string, int>();
         public IActionResult Index(string searchTitle, string genre, string sortOrder, string groupBy, int page = 1)
         {
+            
             var recordsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "records.csv");
             var namesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "names.csv");
             var titlesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "titles.csv");
@@ -17,6 +18,13 @@ namespace FBZ.Web.Controllers
             List<ComicRecord> records;
             List<NameRecord> names;
             List<TitleRecord> titles;
+            if (!string.IsNullOrEmpty(searchTitle))
+            {
+                if (searchQueries.ContainsKey(searchTitle))
+                    searchQueries[searchTitle]++;
+                else
+                    searchQueries[searchTitle] = 1;
+            }
 
             using (var reader = new StreamReader(recordsPath))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
