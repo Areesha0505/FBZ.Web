@@ -70,10 +70,17 @@ namespace FBZ.Web.Controllers
                     Material_type = r.Material_type,
                     Year = t.Date_of_publication,
                     ISBN = string.IsNullOrEmpty(r.ISBN) ? "missing" : r.ISBN,
+                    Language = r.Language,
+                    Edition = r.Edition,
+                    NameType = r.Type_of_name,
+                
+
+
 
 
                 };
             merged = merged
+
 .GroupBy(x => x.BL_Record_ID)
 .Select(g => new
 {
@@ -83,7 +90,10 @@ namespace FBZ.Web.Controllers
     Genre = g.First().Genre,
     Material_type = g.First().Material_type,
     Year = string.Join(", ", g.Select(x => x.Year).Where(y => !string.IsNullOrEmpty(y)).Distinct()),
-    ISBN = string.Join(", ", g.Select(x => string.IsNullOrEmpty(x.ISBN) ? "missing" : x.ISBN).Distinct())
+    ISBN = string.Join(", ", g.Select(x => string.IsNullOrEmpty(x.ISBN) ? "missing" : x.ISBN).Distinct()),
+    Language = string.Join(", ", g.Select(x => x.Language).Where(l => !string.IsNullOrEmpty(l)).Distinct()),
+    Edition = string.Join(", ", g.Select(x => x.Edition).Where(e => !string.IsNullOrEmpty(e)).Distinct()),
+    NameType = string.Join(", ", g.Select(x => x.NameType).Where(n => !string.IsNullOrEmpty(n)).Distinct()),
 });
 
             if (!string.IsNullOrEmpty(searchTitle))

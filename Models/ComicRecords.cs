@@ -33,8 +33,21 @@ namespace FBZ.Web.Models
 
         [Name("Role")]
         public string Role { get; set; }
+
+
+  
+
+        [Name("Languages")]
+        public string Language { get; set; }
+
+        [Name("Edition")]
+        public string Edition { get; set; }
+
+        [Name("Genre")]
+        public string Genre { get; set; }
+
+        [Name("Date of publication")]
+        public string Year { get; set; }
     }
 }
 
-
-     

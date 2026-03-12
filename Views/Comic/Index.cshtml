@@ -135,14 +135,17 @@
 <table>
 
     <tr>
-        <th>BL Record ID</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>ISBN</th>
-        <th>Material Type</th>
-        <th>Year</th>
-        <th>Save</th>
-        <th>Flag</th>
+            <th>BL Record ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Material Type</th>
+            <th>Year</th>
+            <th>Language</th>
+            <th>Edition</th>
+            <th>Name Type</th>
+            <th>Save</th>
+            <th>Flag</th>
     </tr>
 
     @foreach (var comic in Model)
@@ -154,6 +157,9 @@
             <td>@comic.ISBN</td>
             <td>@comic.Material_type</td>
             <td>@comic.Year</td>
+            <td>@comic.Language</td>
+            <td>@comic.Edition</td>
+            <td>@comic.NameType</td>
             <td>
                 <form method="post" action="/Comic/Save">
                     <input type="hidden" name="id" value="@comic.BL_Record_ID" />
