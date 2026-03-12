@@ -8,6 +8,7 @@ namespace FBZ.Web.Controllers
     public class ComicController : Controller
     {
         static Dictionary<string, int> searchQueries = new Dictionary<string, int>();
+        static Dictionary<string, int> returnedComics = new Dictionary<string, int>();
         public IActionResult Index(string searchTitle, string genre, string sortOrder, string groupBy, int page = 1)
         {
             
@@ -123,13 +124,27 @@ namespace FBZ.Web.Controllers
             ViewBag.TotalRecords = totalRecords;
 
             var displayRecords = merged.Take(100).ToList();
+            foreach (var comic in displayRecords)
+            {
+                if (returnedComics.ContainsKey(comic.Title))
+                    returnedComics[comic.Title]++;
+                else
+                    returnedComics[comic.Title] = 1;
+            }
 
             ViewBag.TopSearches = searchQueries
-    .OrderByDescending(x => x.Value)
-    .Take(10)
-    .ToList();
+        .OrderByDescending(x => x.Value)
+        .Take(10)
+        .ToList();
 
+            ViewBag.TopReturned = returnedComics
+                .OrderByDescending(x => x.Value)
+                .Take(10)
+                .ToList();
+
+         
             return View(pagedData);
+           
         }
         [HttpPost]
         public IActionResult Save(string id)

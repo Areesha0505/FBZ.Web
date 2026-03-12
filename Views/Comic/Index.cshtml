@@ -59,18 +59,57 @@
 <p>
     <b>Showing:</b> @Model.Count() records<br />
     <b>Total Records Loaded Successfully:</b> @ViewBag.TotalRecords
-    <h3>Top Search Queries</h3>
+    
+    <button onclick="toggleSection('searchQueries')">Top Search Queries</button>
+    <button onclick="toggleSection('returnedComics')">Top Returned Comics</button>
+    <button onclick="toggleSection('popularComics')">Comics > 100 Searches</button>
 
-    @if (ViewBag.TopSearches != null)
-    {
-        <ul>
-            @foreach (var item in ViewBag.TopSearches)
-            {
-                <li>@item.Key (@item.Value)</li>
-            }
-        </ul>
-    }
-</p>
+    <div id="searchQueries" style="display:none;">
+
+        <h3>Top Search Queries</h3>
+
+        @if (ViewBag.TopSearches != null)
+        {
+            <ul>
+                @foreach (var item in ViewBag.TopSearches)
+                {
+                    <li>@item.Key (@item.Value)</li>
+                }
+            </ul>
+        }
+
+    </div>
+
+    <div id="returnedComics" style="display:none;">
+
+        <h3>Top Returned Comics</h3>
+
+        @if (ViewBag.TopReturned != null)
+        {
+            <ul>
+                @foreach (var item in ViewBag.TopReturned)
+                {
+                    <li>@item.Key (@item.Value)</li>
+                }
+            </ul>
+        }
+
+    </div>
+    <div id="popularComics" style="display:none;">
+
+        <h3>Comics appearing in more than 100 searches</h3>
+
+        @if (ViewBag.PopularComics != null)
+        {
+            <ul>
+                @foreach (var item in ViewBag.PopularComics)
+                {
+                    <li>@item.Key (@item.Value)</li>
+                }
+            </ul>
+        }
+
+    </div>
 
 <style>
     table {
@@ -135,3 +174,13 @@
     }
 
 </table>
+    <script>
+        function toggleSection(id) {
+            var section = document.getElementById(id);
+            if (section.style.display === "none") {
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
+        }
+    </script>
