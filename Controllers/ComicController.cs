@@ -114,11 +114,18 @@ namespace FBZ.Web.Controllers
             }
             if (groupBy == "author")
             {
-                merged = merged.OrderBy(x => x.Author);
+                merged = merged
+                    .OrderBy(x => string.IsNullOrEmpty(x.Author))
+                    .ThenBy(x => x.Author)
+                    .ThenBy(x => x.Title);
             }
+
             if (groupBy == "year")
             {
-                merged = merged.OrderBy(x => x.Year);
+                merged = merged
+                    .OrderBy(x => string.IsNullOrEmpty(x.Year))
+                    .ThenBy(x => x.Year)
+                    .ThenBy(x => x.Title);
             }
             ViewBag.TotalRecords = merged.Count();
             int pageSize = 100;
@@ -133,7 +140,7 @@ namespace FBZ.Web.Controllers
 
             ViewBag.TotalRecords = totalRecords;
 
-            var displayRecords = merged.Take(100).ToList();
+            var displayRecords = pagedData;
             foreach (var comic in displayRecords)
             {
                 if (returnedComics.ContainsKey(comic.Title))
