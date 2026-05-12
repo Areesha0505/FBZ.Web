@@ -11,7 +11,7 @@ namespace FBZ.Web.Controllers
     {
         static Dictionary<string, int> searchQueries = new Dictionary<string, int>();
         static Dictionary<string, int> returnedComics = new Dictionary<string, int>();
-        public IActionResult Index(string searchTitle, string genre, string sortOrder, string groupBy, int page = 1)
+        public async Task<IActionResult> Index(string searchTitle, string genre, string sortOrder, string groupBy, int page = 1)
         {
             
             var recordsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "records.csv");
@@ -143,6 +143,15 @@ namespace FBZ.Web.Controllers
             ViewBag.TotalRecords = totalRecords;
 
             var displayRecords = pagedData;
+
+            GoogleBookResult googleBook = null;
+
+            if (!string.IsNullOrEmpty(searchTitle))
+            {
+                googleBook = await GetGoogleBook(searchTitle);
+            }
+
+            ViewBag.GoogleBook = googleBook;
             foreach (var comic in displayRecords)
             {
                 if (returnedComics.ContainsKey(comic.Title))
