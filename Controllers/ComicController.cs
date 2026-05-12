@@ -215,5 +215,28 @@ namespace FBZ.Web.Controllers
 
             return View(savedIds);
         }
+        private async Task<GoogleBookResult> GetGoogleBook(string title)
+        {
+            using (var client = new HttpClient())
+            {
+                var url = $"https://www.googleapis.com/books/v1/volumes?q={title}";
+
+                var response = await client.GetStringAsync(url);
+
+                var data = JObject.Parse(response);
+
+                var item = data["items"]?.First;
+
+                if (item == null)
+                    return null;
+
+                return new GoogleBookResult
+                {
+                    Title = item["volumeInfo"]?["title"]?.ToString(),
+                    Description = item["volumeInfo"]?["description"]?.ToString(),
+                    Thumbnail = item["volumeInfo"]?["imageLinks"]?["thumbnail"]?.ToString()
+                };
+            }
+        }
     }
 }
