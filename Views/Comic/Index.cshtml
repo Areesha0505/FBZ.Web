@@ -18,8 +18,7 @@
 
     <br /><br />
 
-    <label><b>Search Title:</b></label>
-    <input type="text" name="searchTitle" placeholder="Enter title..." />
+    <input type="text" name="searchTitle" value="@Context.Request.Query["searchTitle"]" placeholder="Enter title..." />
 
     <button type="submit">Search</button>
 
@@ -34,11 +33,11 @@
 
     <input type="radio" name="groupBy" value="year"> Year
 
-    <a href="/?page=@(Context.Request.Query["page"].Count == 0 ? 1 : int.Parse(Context.Request.Query["page"]) - 1)">
+    <a href="/Comic/Index?page=@(Context.Request.Query["page"].Count == 0 ? 1 : int.Parse(Context.Request.Query["page"]) - 1)">
         <button>Previous 100</button>
     </a>
 
-    <a href="/?page=@(Context.Request.Query["page"].Count == 0 ? 2 : int.Parse(Context.Request.Query["page"]) + 1)">
+    <a href="/Comic/Index?page=@(Context.Request.Query["page"].Count == 0 ? 2 : int.Parse(Context.Request.Query["page"]) + 1)">
         <button>Next 100</button>
     </a>
     <br />
@@ -59,6 +58,28 @@
 <p>
     <b>Showing:</b> @Model.Count() records<br />
     <b>Total Records Loaded Successfully:</b> @ViewBag.TotalRecords
+</p>
+
+    <br /><br />
+
+@if (ViewBag.GoogleBook != null && !string.IsNullOrEmpty(Context.Request.Query["searchTitle"]))
+{
+    <p>TEST API WORKING</p>
+
+    <div style="border:1px solid #999; padding:15px; margin-bottom:20px; background-color:#f9f9f9;">
+
+        <h3>Google Books API Result</h3>
+
+        <p><strong>Title:</strong> @ViewBag.GoogleBook.Title</p>
+
+        <p><strong>Description:</strong> @ViewBag.GoogleBook.Description</p>
+
+        <img src="@ViewBag.GoogleBook.Thumbnail" width="150" />
+
+    </div>
+}
+
+
     
     <button onclick="toggleSection('searchQueries')">Top Search Queries</button>
     <button onclick="toggleSection('returnedComics')">Top Returned Comics</button>
@@ -99,7 +120,7 @@
 
         <h3>Comics appearing in more than 100 searches</h3>
 
-        @if (ViewBag.PopularComics != null)
+    @if (ViewBag.GoogleBook != null)
         {
             <ul>
                 @foreach (var item in ViewBag.PopularComics)

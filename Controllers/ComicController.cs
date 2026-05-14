@@ -13,7 +13,7 @@ namespace FBZ.Web.Controllers
         static Dictionary<string, int> returnedComics = new Dictionary<string, int>();
         public async Task<IActionResult> Index(string searchTitle, string genre, string sortOrder, string groupBy, int page = 1)
         {
-            
+
             var recordsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "records.csv");
             var namesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "names.csv");
             var titlesPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Data", "titles.csv");
@@ -75,7 +75,7 @@ namespace FBZ.Web.Controllers
                     Language = r.Language,
                     Edition = r.Edition,
                     NameType = r.Type_of_name,
-                
+
 
 
 
@@ -136,7 +136,7 @@ namespace FBZ.Web.Controllers
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToList();
-           
+
 
             var totalRecords = merged.Count();
 
@@ -146,10 +146,7 @@ namespace FBZ.Web.Controllers
 
             GoogleBookResult googleBook = null;
 
-            if (!string.IsNullOrEmpty(searchTitle))
-            {
-                googleBook = await GetGoogleBook(searchTitle);
-            }
+            googleBook = await GetGoogleBook(searchTitle ?? "Batman");
 
             ViewBag.GoogleBook = googleBook;
             foreach (var comic in displayRecords)
@@ -170,9 +167,14 @@ namespace FBZ.Web.Controllers
                 .Take(10)
                 .ToList();
 
-         
+            ViewBag.PopularComics = returnedComics
+    .Where(x => x.Value > 100)
+    .ToList();
+
+
             return View(pagedData);
-           
+
+
         }
         [HttpPost]
         public IActionResult Save(string id)
@@ -181,7 +183,7 @@ namespace FBZ.Web.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            
+
             var saved = HttpContext.Session.GetString("SavedComics");
 
             if (saved == null)
@@ -228,22 +230,47 @@ namespace FBZ.Web.Controllers
         {
             using (var client = new HttpClient())
             {
-                var url = $"https://www.googleapis.com/books/v1/volumes?q={title}";
+                var url = $"https://www.googleapis.com/books/v1/volumes?q={Uri.EscapeDataString(title)}&key=AIzaSyCuXX-BKw--qfysxkyBuGYwkrNPSLGUMdk";
 
-                var response = await client.GetStringAsync(url);
+                string response = "";
+
+                try
+                {
+                    response = await client.GetStringAsync(url);
+                    Console.WriteLine(response);
+                }
+                catch (Exception ex)
+                {
+                    return new GoogleBookResult
+                    {
+                        Title = "ERROR",
+                        Description = ex.Message,
+                        Thumbnail = "https://via.placeholder.com/150"
+                    };
+                }
 
                 var data = JObject.Parse(response);
 
-                var item = data["items"]?.First;
+                var item = data["items"]?.FirstOrDefault();
 
                 if (item == null)
-                    return null;
+                {
+                    return new GoogleBookResult
+                    {
+                        Title = "No API result found",
+                        Description = "Google Books API did not return data.",
+                        Thumbnail = "https://via.placeholder.com/150"
+                    };
+                }
+
 
                 return new GoogleBookResult
                 {
-                    Title = item["volumeInfo"]?["title"]?.ToString(),
-                    Description = item["volumeInfo"]?["description"]?.ToString(),
-                    Thumbnail = item["volumeInfo"]?["imageLinks"]?["thumbnail"]?.ToString()
+                    Title = item["volumeInfo"]?["title"]?.ToString() ?? "No title found",
+
+                    Description = item["volumeInfo"]?["description"]?.ToString() ?? "No description available.",
+
+                    Thumbnail = item["volumeInfo"]?["imageLinks"]?["thumbnail"]?.ToString() ?? "https://via.placeholder.com/150"
                 };
             }
         }
